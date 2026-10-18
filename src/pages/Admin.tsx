@@ -1,13 +1,15 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
-import { CITIES } from "../lib/config";
+import { CITIES, COUNTIES, RESOURCE_CATEGORIES } from "../lib/config";
 
 type Row = Record<string, any>;
-type Tab = "events" | "volunteer_signups" | "service_requests" | "contact_messages";
+type Tab = "events" | "resources" | "newsletter_subscribers" | "volunteer_signups" | "service_requests" | "contact_messages";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "events", label: "Events" },
+  { id: "resources", label: "Resources" },
+  { id: "newsletter_subscribers", label: "Newsletter" },
   { id: "volunteer_signups", label: "Volunteers" },
   { id: "service_requests", label: "Service requests" },
   { id: "contact_messages", label: "Messages" },
@@ -135,7 +137,118 @@ function EventsManager() {
   );
 }
 
-function Submissions({ table }: { table: Exclude<Tab, "events"> }) {
+function ResourcesManager() {
+  const [rows, setRows] = useState<Row[]>([]);
+  const [err, setErr] = useState("");
+  const load = useCallback(async () => {
+    const { data, error } = await supabase.from("resources").select("*").order("county").order("category").order("name");
+    if (error) setErr(error.message);
+    else setRows(data ?? []);
+  }, []);
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  async function add(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const val = (k: string) => String(fd.get(k) ?? "").trim() || null;
+    const { error } = await supabase.from("resources").insert({
+      county: fd.get("county"),
+      category: fd.get("category"),
+      name: val("name"),
+      description: val("description"),
+      phone: val("phone"),
+      email: val("email"),
+      website: val("website"),
+      address: val("address"),
+      hours: val("hours"),
+      published: fd.get("published") === "on",
+    });
+    if (error) setErr(error.message);
+    else {
+      setErr("");
+      form.reset();
+      load();
+    }
+  }
+  const togglePublished = async (id: string, published: boolean) => {
+    await supabase.from("resources").update({ published }).eq("id", id);
+    load();
+  };
+  const remove = async (id: string) => {
+    if (!confirm("Delete this resource?")) return;
+    await supabase.from("resources").delete().eq("id", id);
+    load();
+  };
+  const catLabel = (id: string) => RESOURCE_CATEGORIES.find((c) => c.id === id)?.label ?? id;
+
+  return (
+    <div className="space-y-8">
+      <form onSubmit={add} className="card grid gap-4 bg-white sm:grid-cols-2">
+        <div><label className="label" htmlFor="r-county">County</label><select id="r-county" name="county" className="input">{COUNTIES.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}</select></div>
+        <div><label className="label" htmlFor="r-category">Service type</label><select id="r-category" name="category" className="input">{RESOURCE_CATEGORIES.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}</select></div>
+        <div className="sm:col-span-2"><label className="label" htmlFor="r-name">Name</label><input id="r-name" name="name" required className="input" /></div>
+        <div className="sm:col-span-2"><label className="label" htmlFor="r-desc">Description</label><textarea id="r-desc" name="description" rows={2} maxLength={1000} className="input" /></div>
+        <div><label className="label" htmlFor="r-phone">Phone</label><input id="r-phone" name="phone" type="tel" className="input" /></div>
+        <div><label className="label" htmlFor="r-email">Email</label><input id="r-email" name="email" type="email" className="input" /></div>
+        <div><label className="label" htmlFor="r-web">Website (https://…)</label><input id="r-web" name="website" type="url" className="input" /></div>
+        <div><label className="label" htmlFor="r-hours">Hours</label><input id="r-hours" name="hours" className="input" /></div>
+        <div className="sm:col-span-2"><label className="label" htmlFor="r-addr">Address</label><input id="r-addr" name="address" className="input" /></div>
+        <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" name="published" defaultChecked className="h-4 w-4" />Published</label>
+        <div className="flex items-end sm:justify-end"><button className="btn btn-primary">Add resource</button></div>
+        {err && <p role="alert" className="font-semibold text-red-700 sm:col-span-2">{err}</p>}
+      </form>
+
+      <ul className="space-y-3">
+        {rows.map((r) => (
+          <li key={r.id} className="card flex flex-wrap items-center justify-between gap-3 bg-white py-4">
+            <div className="min-w-0">
+              <p className="font-display font-bold">{r.name}</p>
+              <p className="text-sm">{r.county} · {catLabel(r.category)}{r.phone ? ` · ${r.phone}` : ""}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={r.published} onChange={(e) => togglePublished(r.id, e.target.checked)} className="h-4 w-4" />Published</label>
+              <button onClick={() => remove(r.id)} className="btn btn-soft py-1.5">Delete</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Subscribers() {
+  const [rows, setRows] = useState<Row[]>([]);
+  const [err, setErr] = useState("");
+  useEffect(() => {
+    supabase.from("newsletter_subscribers").select("email,source,subscribed_at,unsubscribed_at").order("subscribed_at", { ascending: false }).then(({ data, error }) => {
+      if (error) setErr(error.message);
+      else setRows(data ?? []);
+    });
+  }, []);
+  const active = rows.filter((r) => !r.unsubscribed_at);
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between">
+        <p className="font-semibold">{active.length} subscribed · {rows.length - active.length} unsubscribed</p>
+        <button className="btn btn-soft" onClick={() => download("newsletter-subscribers.csv", toCsv(active))} disabled={!active.length}>Export active (CSV)</button>
+      </div>
+      {err && <p role="alert" className="mb-3 font-semibold text-red-700">{err}</p>}
+      <ul className="space-y-2">
+        {rows.map((r) => (
+          <li key={r.email} className="card flex flex-wrap items-center justify-between gap-2 bg-white py-3">
+            <span className="min-w-0 break-all font-semibold">{r.email}</span>
+            <span className="text-sm">{r.unsubscribed_at ? "Unsubscribed" : new Date(r.subscribed_at).toLocaleDateString()}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Submissions({ table }: { table: Exclude<Tab, "events" | "resources" | "newsletter_subscribers"> }) {
   const [rows, setRows] = useState<Row[]>([]);
   const [err, setErr] = useState("");
   const load = useCallback(async () => {
@@ -222,7 +335,7 @@ export default function Admin() {
                 </button>
               ))}
             </div>
-            {tab === "events" ? <EventsManager /> : <Submissions key={tab} table={tab} />}
+            {tab === "events" ? <EventsManager /> : tab === "resources" ? <ResourcesManager /> : tab === "newsletter_subscribers" ? <Subscribers /> : <Submissions key={tab} table={tab} />}
           </>
         )}
       </div>

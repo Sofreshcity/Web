@@ -8,6 +8,9 @@ import GetInvolved from "./pages/GetInvolved";
 import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
 import Admin from "./pages/Admin";
+import Resources from "./pages/Resources";
+import Newsletter from "./pages/Newsletter";
+import Unsubscribe from "./pages/Unsubscribe";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -17,9 +20,12 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="services" element={<Services />} />
+        <Route path="resources" element={<Resources />} />
         <Route path="events" element={<Events />} />
         <Route path="get-involved" element={<GetInvolved />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="newsletter" element={<Newsletter />} />
+        <Route path="unsubscribe" element={<Unsubscribe />} />
         <Route path="donate" element={<Donate />} />
         <Route path="admin" element={<Admin />} />
         <Route path="*" element={<NotFound />} />

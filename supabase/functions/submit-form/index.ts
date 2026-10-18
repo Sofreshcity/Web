@@ -3,7 +3,7 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided automatically.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-type Kind = "volunteer" | "service" | "contact";
+type Kind = "volunteer" | "service" | "contact" | "newsletter" | "unsubscribe";
 
 const cors = (origin: string | null) => {
   const allowed = (Deno.env.get("ALLOWED_ORIGINS") ?? "").split(",").map((s) => s.trim()).filter(Boolean);
@@ -104,6 +104,35 @@ Deno.serve(async (req) => {
       const { error } = await db.from("contact_messages").insert(row);
       if (error) throw error;
       if (notify) await sendEmail(notify, `Contact: ${row.subject ?? "New message"}`, `<p>From ${esc(row.full_name)} (${esc(row.email)})</p><p>${esc(row.message)}</p>`, row.email);
+    } else if (kind === "newsletter") {
+      const email = str(body.email, 200).toLowerCase();
+      if (!emailOk(email)) return json({ error: "Please enter a valid email." }, 400, headers);
+      const { data: existing } = await db.from("newsletter_subscribers").select("id,unsubscribe_token,unsubscribed_at").eq("email", email).maybeSingle();
+      let token = existing?.unsubscribe_token as string | undefined;
+      const isNew = !existing;
+      if (!existing) {
+        const { data, error } = await db.from("newsletter_subscribers").insert({ email, source: str(body.source, 40) || "website" }).select("unsubscribe_token").single();
+        if (error) throw error;
+        token = data.unsubscribe_token;
+      } else if (existing.unsubscribed_at) {
+        const { error } = await db.from("newsletter_subscribers").update({ unsubscribed_at: null, subscribed_at: new Date().toISOString() }).eq("id", existing.id);
+        if (error) throw error;
+      }
+      // Only email brand-new or re-subscribing addresses once, to avoid being used to spam a single inbox.
+      if (isNew || existing?.unsubscribed_at) {
+        const site = (Deno.env.get("SITE_URL") ?? (Deno.env.get("ALLOWED_ORIGINS") ?? "").split(",")[0] ?? "").trim().replace(/\/$/, "");
+        const link = site ? `${site}/unsubscribe?token=${token}` : "";
+        await sendEmail(
+          email,
+          "You're subscribed to So Fresh City updates",
+          `<p>Thanks for subscribing! You'll hear from us about upcoming events and local resources.</p>${link ? `<p style="font-size:12px;color:#666">Don't want these emails? <a href="${link}">Unsubscribe</a>.</p>` : ""}`,
+        );
+      }
+    } else if (kind === "unsubscribe") {
+      const token = str(body.token, 60);
+      if (!/^[0-9a-f-]{36}$/i.test(token)) return json({ error: "Invalid link." }, 400, headers);
+      const { error } = await db.from("newsletter_subscribers").update({ unsubscribed_at: new Date().toISOString() }).eq("unsubscribe_token", token);
+      if (error) throw error;
     } else {
       return json({ error: "Unknown form type" }, 400, headers);
     }

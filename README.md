@@ -9,6 +9,11 @@ Vite + React + Tailwind frontend, Supabase (database, auth, edge function), Rese
 - **Admin** (`/admin`) signs in with Supabase Auth; only users listed in `admin_users` can read or edit anything.
 - **Donate** links out to your processor via `VITE_DONATE_URL`.
 
+## Newsletter and resources
+
+- **Newsletter:** signups are saved in `newsletter_subscribers` and get a welcome email with a token-based unsubscribe link (`/unsubscribe`). Staff can export active subscribers as CSV from the dashboard's Newsletter tab, for example to import into Resend Broadcasts. Every newsletter you send must include an unsubscribe link.
+- **Resources:** `/resources` groups published rows from the `resources` table by county (San Francisco, Alameda) and then by service type (housing, employment, food, health care, mental health, legal help, reentry support, ID & documents, other). Staff add and publish resources in the dashboard's Resources tab. To add a county or service type, update the check constraints in the database and `COUNTIES` / `RESOURCE_CATEGORIES` in `src/lib/config.ts`.
+
 ## Local development
 
 ```bash
@@ -31,6 +36,7 @@ npm run dev
    - `FROM_EMAIL`: e.g. `So Fresh City <hello@mail.yourdomain.org>` (domain must be verified in Resend)
    - `NOTIFY_EMAIL`: where staff notifications go
    - `ALLOWED_ORIGINS`: e.g. `https://yourdomain.org,https://your-project.pages.dev`
+   - `SITE_URL`: your public site, e.g. `https://yourdomain.org` (used for the newsletter unsubscribe link)
    Until `RESEND_API_KEY` and `FROM_EMAIL` are set, submissions are still saved; emails are skipped.
 5. Deploy the function with `supabase functions deploy submit-form --no-verify-jwt`.
 
