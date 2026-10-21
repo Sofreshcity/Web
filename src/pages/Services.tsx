@@ -1,3 +1,5 @@
+import CommunityPhoto from "../components/CommunityPhoto";
+import { gallery } from "../data/gallery";
 import { Field, FormShell, Select, TextArea } from "../components/FormBits";
 import { CITIES } from "../lib/config";
 import { useForm } from "../lib/useForm";
@@ -19,6 +21,10 @@ export default function Services() {
       <div className="container-x">
         <h1>Services</h1>
         <p className="mt-4 max-w-2xl text-lg">All of our services are free.</p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <CommunityPhoto photo={gallery[0]} className="aspect-[4/3] w-full rounded-3xl border-2 border-ink" />
+          <CommunityPhoto photo={gallery[3]} className="aspect-[4/3] w-full rounded-3xl border-2 border-ink" />
+        </div>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {services.map((s) => (
             <div key={s.title} className={`card ${s.color}`}>
