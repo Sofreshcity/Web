@@ -3,6 +3,8 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
+import Media from "./pages/Media";
+import Barbers from "./pages/Barbers";
 import Events from "./pages/Events";
 import GetInvolved from "./pages/GetInvolved";
 import Contact from "./pages/Contact";
@@ -20,6 +22,8 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="services" element={<Services />} />
+        <Route path="media" element={<Media />} />
+        <Route path="barbers" element={<Barbers />} />
         <Route path="resources" element={<Resources />} />
         <Route path="events" element={<Events />} />
         <Route path="get-involved" element={<GetInvolved />} />
