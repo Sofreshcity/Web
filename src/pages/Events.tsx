@@ -1,3 +1,5 @@
+import CommunityPhoto from "../components/CommunityPhoto";
+import { gallery } from "../data/gallery";
 import { useEffect, useState } from "react";
 import { MapPin, Calendar } from "lucide-react";
 import { supabase } from "../lib/supabase";
@@ -28,6 +30,7 @@ export default function Events() {
       <div className="container-x max-w-3xl">
         <h1>Events</h1>
         <p className="mt-4 text-lg">Find an upcoming free haircut event near you.</p>
+        <CommunityPhoto photo={gallery[6]} className="mt-8 aspect-[16/9] w-full rounded-3xl border-2 border-ink" />
         <div className="mt-8 space-y-5">
           {events === null && !failed && <p>Loading…</p>}
           {failed && <p>We couldn't load events right now. Please check back soon.</p>}
