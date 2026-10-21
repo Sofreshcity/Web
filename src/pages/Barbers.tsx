@@ -1,3 +1,5 @@
+import CommunityPhoto from "../components/CommunityPhoto";
+import { gallery } from "../data/gallery";
 import { Link } from "react-router-dom";
 import { Scissors, HeartHandshake, CalendarDays, ArrowRight } from "lucide-react";
 
@@ -15,6 +17,10 @@ export default function Barbers() {
           <p className="font-display text-sm font-black uppercase tracking-widest">The people behind the cuts</p>
           <h1 className="mt-3">Barbers &amp; stylists</h1>
           <p className="mt-5 max-w-2xl text-lg">A great haircut can restore confidence and create connection. Our volunteer barbers and stylists help make free grooming services possible across the Bay Area.</p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <CommunityPhoto photo={gallery[1]} className="aspect-[4/3] w-full rounded-3xl border-2 border-ink" />
+            <CommunityPhoto photo={gallery[5]} className="aspect-[4/3] w-full rounded-3xl border-2 border-ink" />
+          </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/get-involved" className="btn btn-primary">Volunteer with us <ArrowRight size={18} aria-hidden="true" /></Link>
             <Link to="/services" className="btn btn-soft">Request a free haircut</Link>
