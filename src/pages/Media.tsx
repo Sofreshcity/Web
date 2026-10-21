@@ -1,3 +1,5 @@
+import CommunityPhoto from "../components/CommunityPhoto";
+import { gallery } from "../data/gallery";
 import { Link } from "react-router-dom";
 import { Camera, Film, Images, ArrowRight } from "lucide-react";
 
@@ -31,10 +33,22 @@ export default function Media() {
                 <Icon size={36} strokeWidth={1.8} aria-hidden="true" />
                 <h3 className="mt-5">{title}</h3>
                 <p className="mt-3 flex-1">{description}</p>
-                <span className="mt-6 inline-block text-sm font-display font-bold">Gallery coming soon</span>
+                <span className="mt-6 inline-block text-sm font-display font-bold">Explore our moments</span>
               </article>
             ))}
           </div>
+          <section aria-label="Community photo gallery" className="mt-12">
+            <h2>Community in pictures</h2>
+            <p className="mt-3">Real moments from haircuts, neighborhood gatherings, and community care.</p>
+            <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {gallery.map((photo) => (
+                <figure key={photo.id} className="overflow-hidden rounded-3xl border-2 border-ink bg-white">
+                  <CommunityPhoto photo={photo} className="aspect-[4/3] w-full" />
+                  <figcaption className="px-5 py-4 font-display font-bold">{photo.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
           <div className="card mt-10 bg-white">
             <h2 className="text-2xl">Have a story to share?</h2>
             <p className="mt-3 max-w-2xl">Were you part of a So Fresh City event? We would love to hear from you. Reach out about photos, interviews, collaborations, or media coverage.</p>
