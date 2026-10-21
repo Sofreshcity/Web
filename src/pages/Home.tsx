@@ -1,3 +1,5 @@
+import CommunityPhoto from "../components/CommunityPhoto";
+import { gallery } from "../data/gallery";
 import { Link } from "react-router-dom";
 import { Scissors, Sparkles, Megaphone } from "lucide-react";
 import { DONATE_URL } from "../lib/config";
@@ -31,7 +33,11 @@ export default function Home() {
               )}
             </div>
           </div>
-          <div className="card bg-lavender lg:col-span-2">
+          <div className="lg:col-span-2">
+            <CommunityPhoto photo={gallery[2]} className="aspect-[4/3] w-full rounded-3xl border-2 border-ink" />
+            <p className="mt-3 text-sm font-bold">Community care in action</p>
+          </div>
+          <div className="card bg-lavender lg:col-span-5">
             <h2 className="text-2xl sm:text-3xl">Looking sharp is a first step.</h2>
             <p className="mt-3">A fresh cut can change how someone feels walking into an interview, a clinic, or a new chapter.</p>
           </div>
