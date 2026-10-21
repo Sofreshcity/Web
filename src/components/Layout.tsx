@@ -7,6 +7,8 @@ import NewsletterForm from "./NewsletterForm";
 const links = [
   { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
+  { to: "/barbers", label: "Barbers" },
+  { to: "/media", label: "Media" },
   { to: "/resources", label: "Resources" },
   { to: "/events", label: "Events" },
   { to: "/get-involved", label: "Get involved" },
