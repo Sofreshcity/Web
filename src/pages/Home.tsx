@@ -1,7 +1,8 @@
+import { useRef } from "react";
 import CommunityPhoto from "../components/CommunityPhoto";
 import { gallery } from "../data/gallery";
 import { Link } from "react-router-dom";
-import { Scissors, Sparkles, Megaphone } from "lucide-react";
+import { Scissors, Sparkles, Megaphone, ArrowLeft, ArrowRight } from "lucide-react";
 import { DONATE_URL } from "../lib/config";
 
 const pillars = [
@@ -11,6 +12,8 @@ const pillars = [
 ];
 
 export default function Home() {
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const moveGallery = (direction: number) => galleryRef.current?.scrollBy({ left: direction * 340, behavior: "smooth" });
   return (
     <>
       <section className="section">
@@ -74,6 +77,33 @@ export default function Home() {
             <Link to="/get-involved" className="btn btn-primary mt-5">
               Become a volunteer
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="section border-t-2 border-ink bg-white" aria-labelledby="community-gallery-heading">
+        <div className="container-x">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div>
+              <p className="font-display text-sm font-black uppercase tracking-wider">The So Fresh City community</p>
+              <h2 id="community-gallery-heading" className="mt-2">Our work, in pictures</h2>
+              <p className="mt-3 max-w-2xl">Real moments from the people, barbers, stylists and neighbors who make our events possible.</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button type="button" onClick={() => moveGallery(-1)} aria-label="Scroll gallery left" className="btn btn-soft !p-3"><ArrowLeft size={20} /></button>
+              <button type="button" onClick={() => moveGallery(1)} aria-label="Scroll gallery right" className="btn btn-soft !p-3"><ArrowRight size={20} /></button>
+            </div>
+          </div>
+          <div ref={galleryRef} tabIndex={0} aria-label="Community photo gallery, scroll horizontally for more photos" className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-5 focus-visible:outline-offset-4" style={{ scrollbarWidth: "thin" }}>
+            {gallery.map((photo) => (
+              <Link to="/media" key={photo.id} className="group w-[82%] shrink-0 snap-start overflow-hidden rounded-3xl border-2 border-ink bg-paper sm:w-[43%] lg:w-[31%]">
+                <CommunityPhoto photo={photo} className="aspect-[4/3] w-full transition-transform duration-300 group-hover:scale-[1.025]" />
+                <p className="px-5 py-4 font-display font-bold">{photo.caption}</p>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-5 flex justify-center">
+            <Link to="/media" className="btn btn-primary">Explore the full gallery <ArrowRight size={18} aria-hidden="true" /></Link>
           </div>
         </div>
       </section>
