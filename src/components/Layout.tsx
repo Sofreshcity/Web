@@ -7,13 +7,12 @@ import NewsletterForm from "./NewsletterForm";
 const links = [
   { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
-  { to: "/barbers", label: "Barbers" },
-  { to: "/media", label: "Media" },
-  { to: "/resources", label: "Resources" },
   { to: "/events", label: "Events" },
-  { to: "/get-involved", label: "Get involved" },
-  { to: "/contact", label: "Contact" },
+  { to: "/resources", label: "Resources" },
+  { to: "/media", label: "Media" },
+  { to: "/get-involved", label: "Get Involved" },
   { to: "/newsletter", label: "Newsletter" },
+  { to: "/contact", label: "Contact" },
 ];
 
 export default function Layout() {
@@ -27,22 +26,12 @@ export default function Layout() {
           <Link to="/" className="font-display text-xl font-black tracking-tight" onClick={() => setOpen(false)}>
             So Fresh City
           </Link>
-          <nav className="hidden items-center gap-5 lg:flex" aria-label="Main">
-            {links.map((l) => (
-              <NavLink key={l.to} to={l.to} className={linkClass}>
-                {l.label}
-              </NavLink>
-            ))}
-            <Link to="/donate" className="btn btn-primary">
-              Donate
-            </Link>
-          </nav>
-          <button className="lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
+          <button type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>
             {open ? <X /> : <Menu />}
           </button>
         </div>
         {open && (
-          <nav className="container-x flex flex-col gap-4 pb-5 lg:hidden" aria-label="Mobile">
+          <nav id="main-menu" className="container-x flex flex-col gap-4 pb-5" aria-label="Main navigation">
             {links.map((l) => (
               <NavLink key={l.to} to={l.to} className={linkClass} onClick={() => setOpen(false)}>
                 {l.label}
