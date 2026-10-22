@@ -25,9 +25,9 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-20 border-b-2 border-ink bg-paper/95 backdrop-blur">
-        <div className="container-x flex h-16 items-center justify-between">
+        <div className="container-x flex h-24 items-center justify-between">
           <Link to="/" className="inline-flex items-center" aria-label="So Fresh City home" onClick={() => setOpen(false)}>
-            <img src={logoSrc} alt="So Fresh City" className="h-12 w-12 rounded-full object-cover" width={48} height={48} />
+            <img src={logoSrc} alt="So Fresh City" className="h-20 w-20 rounded-full object-cover" width={80} height={80} />
           </Link>
           <button type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>
             {open ? <X /> : <Menu />}
@@ -64,7 +64,7 @@ export default function Layout() {
       <footer className="border-t-2 border-ink bg-ink text-paper">
         <div className="container-x grid gap-8 py-12 sm:grid-cols-3">
           <div>
-            <img src={logoSrc} alt="So Fresh City" className="h-20 w-20 rounded-full object-cover" width={80} height={80} />
+            <img src={logoSrc} alt="So Fresh City" className="h-28 w-28 rounded-full object-cover" width={112} height={112} />
             <p className="mt-2 text-sm text-paper/80">A 501(c)(3) nonprofit in the San Francisco Bay Area providing free haircuts, hygiene services, and social advocacy.</p>
           </div>
           <div className="flex flex-col gap-2 text-sm">
