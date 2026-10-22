@@ -23,7 +23,7 @@ export default function Barbers() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/get-involved" className="btn btn-primary">Volunteer with us <ArrowRight size={18} aria-hidden="true" /></Link>
-            <Link to="/services" className="btn btn-soft">Request a free haircut</Link>
+            <Link to="/events" className="btn btn-soft">View events</Link>
           </div>
         </div>
       </section>
@@ -48,9 +48,9 @@ export default function Barbers() {
             </div>
             <div className="card bg-white">
               <h2 className="text-2xl">Looking for a haircut?</h2>
-              <p className="mt-3">Our haircut services are free. Visit our services page to send a request, or check the events calendar.</p>
+              <p className="mt-3">Our haircut services are free. Check our events calendar for upcoming free haircut opportunities.</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/services" className="btn btn-primary">Request a service</Link>
+                <Link to="/events" className="btn btn-primary">View events</Link>
                 <Link to="/events" className="btn btn-soft">See events</Link>
               </div>
             </div>
