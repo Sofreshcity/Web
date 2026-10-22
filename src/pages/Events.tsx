@@ -116,7 +116,7 @@ export default function Events() {
         <p className="mt-4 text-lg">
           Join So Fresh City at upcoming community events for free haircuts and resources.
         </p>
-        <CommunityPhoto photo={gallery[6]} className="mt-8 aspect-[16/9] w-full rounded-3xl border-2 border-ink" />
+        <CommunityPhoto photo={gallery[6]} className="mt-8 aspect-[16/9] w-full max-w-md rounded-3xl border-2 border-ink" />
         <div className="mt-8 space-y-5">
           {scheduled.length === 0 && (
             <p className="card bg-white">
