@@ -19,11 +19,11 @@ export default function Home() {
       <section className="section">
         <div className="container-x grid items-center gap-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <h1>Free haircuts. Real dignity.</h1>
+            <h1>Free haircuts for our communities</h1>
             <p className="mt-6 max-w-xl text-lg">So Fresh City is a 501(c)(3) nonprofit serving the San Francisco Bay Area with free haircuts, hygiene services, and social advocacy for people in need.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/services" className="btn btn-primary">
-                Request a service
+              <Link to="/events" className="btn btn-primary">
+                View events
               </Link>
               <Link to="/get-involved" className="btn btn-soft">
                 Volunteer
@@ -40,7 +40,7 @@ export default function Home() {
           </div>
           <div className="card bg-lavender lg:col-span-5">
             <h2 className="text-2xl sm:text-3xl">Looking sharp is a first step.</h2>
-            <p className="mt-3">A fresh cut can change how someone feels walking into an interview, a clinic, or a new chapter.</p>
+            <p className="mt-3">A fresh cut can restore confidence, uplift spirits, &amp; help someone feel ready to step into an interview or even a new chapter.</p>
           </div>
         </div>
       </section>
@@ -94,9 +94,8 @@ export default function Home() {
           </div>
           <div ref={galleryRef} tabIndex={0} aria-label="Community photo gallery, scroll horizontally for more photos" className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-5 focus-visible:outline-offset-4" style={{ scrollbarWidth: "thin" }}>
             {gallery.map((photo) => (
-              <Link to="/media" key={photo.id} className="group w-[82%] shrink-0 snap-start overflow-hidden rounded-3xl border-2 border-ink bg-paper sm:w-[43%] lg:w-[31%]">
-                <CommunityPhoto photo={photo} className="aspect-[4/3] w-full transition-transform duration-300 group-hover:scale-[1.025]" />
-                <p className="px-5 py-4 font-display font-bold">{photo.caption}</p>
+              <Link to="/media" key={photo.id} className="group w-[82%] shrink-0 snap-start rounded-3xl border-2 border-ink bg-white p-2.5 pb-5 sm:w-[43%] lg:w-[31%]">
+                <CommunityPhoto photo={photo} className="aspect-[4/3] w-full rounded-2xl" />
               </Link>
             ))}
           </div>
