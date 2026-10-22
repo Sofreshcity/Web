@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Instagram, Menu, X } from "lucide-react";
 import { DONATE_URL } from "../lib/config";
 import NewsletterForm from "./NewsletterForm";
 
@@ -17,6 +17,30 @@ const links = [
   { to: "/newsletter", label: "Newsletter" },
   { to: "/contact", label: "Contact" },
 ];
+
+
+const socials = [
+  { name: "Instagram", url: "https://www.instagram.com/sofreshcity/" },
+  { name: "TikTok", url: "https://www.tiktok.com/sofreshcity" },
+];
+
+function SocialLinks({ inFooter = false }: { inFooter?: boolean }) {
+  return (
+    <div className="flex items-center gap-4" aria-label="So Fresh City social media">
+      {socials.map(({ name, url }) => (
+        <a key={name} href={url} target="_blank" rel="noopener noreferrer"
+          aria-label={`So Fresh City on ${name} (opens in a new tab)`}
+          className={`inline-flex h-11 w-11 items-center justify-center rounded-full border-2 transition hover:scale-105 focus-visible:outline-offset-4 ${inFooter ? "border-paper text-paper" : "border-ink text-ink"}`}>
+          {name === "Instagram" ? <Instagram size={23} aria-hidden="true" /> : (
+            <svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M16.7 2c.2 2.3 1.6 3.7 3.9 3.9v3.4c-1.5 0-2.9-.4-4-1.2v6.4c0 4-3.2 7.1-7.1 7.1s-7.1-3.2-7.1-7.1 3.2-7.1 7.1-7.1c.4 0 .8 0 1.2.1v3.5c-.4-.1-.8-.2-1.2-.2-2 0-3.6 1.6-3.6 3.6S7.5 18 9.5 18s3.6-1.6 3.6-3.6V2h3.6Z" />
+            </svg>
+          )}
+        </a>
+      ))}
+    </div>
+  );
+}
 
 export default function Layout() {
   const [open, setOpen] = useState(false);
@@ -40,6 +64,7 @@ export default function Layout() {
                 {l.label}
               </NavLink>
             ))}
+            <SocialLinks />
             <Link to="/donate" className="btn btn-primary self-start" onClick={() => setOpen(false)}>
               Donate
             </Link>
@@ -66,6 +91,7 @@ export default function Layout() {
           <div>
             <img src={logoSrc} alt="So Fresh City" className="h-28 w-28 rounded-full object-cover" width={112} height={112} />
             <p className="mt-2 text-sm text-paper/80">A 501(c)(3) nonprofit in the San Francisco Bay Area providing free haircuts, hygiene services, and social advocacy.</p>
+            <div className="mt-5"><SocialLinks inFooter /></div>
           </div>
           <div className="flex flex-col gap-2 text-sm">
             {links.map((l) => (
