@@ -19,6 +19,9 @@ const links = [
 ];
 
 
+const primaryLinks = links.slice(0, 5);
+const additionalLinks = links.slice(5);
+
 const socials = [
   { name: "Instagram", url: "https://www.instagram.com/sofreshcity/" },
   { name: "TikTok", url: "https://www.tiktok.com/sofreshcity" },
@@ -53,19 +56,27 @@ export default function Layout() {
           <Link to="/" className="inline-flex items-center" aria-label="So Fresh City home" onClick={() => setOpen(false)}>
             <img src={logoSrc} alt="So Fresh City" className="h-20 w-20 rounded-full object-cover" width={80} height={80} />
           </Link>
-          <button type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>
+          <nav aria-label="Featured pages" className="hidden flex-1 items-center justify-evenly gap-3 px-5 lg:flex">
+            {primaryLinks.map((l) => (
+              <NavLink key={l.to} to={l.to} className={linkClass} onClick={() => setOpen(false)}>{l.label}</NavLink>
+            ))}
+          </nav>
+          <button type="button" className="shrink-0 rounded-lg p-2" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>
             {open ? <X /> : <Menu />}
           </button>
         </div>
         {open && (
-          <nav id="main-menu" className="container-x flex flex-col gap-4 pb-5" aria-label="Main navigation">
-            {links.map((l) => (
-              <NavLink key={l.to} to={l.to} className={linkClass} onClick={() => setOpen(false)}>
-                {l.label}
-              </NavLink>
+          <nav id="main-menu" className="container-x flex flex-col gap-4 pb-5 lg:flex-row lg:items-center lg:justify-evenly lg:gap-5 lg:pt-3" aria-label="Expanded navigation">
+            <div className="flex flex-col gap-4 lg:hidden">
+              {primaryLinks.map((l) => (
+                <NavLink key={l.to} to={l.to} className={linkClass} onClick={() => setOpen(false)}>{l.label}</NavLink>
+              ))}
+            </div>
+            {additionalLinks.map((l) => (
+              <NavLink key={l.to} to={l.to} className={linkClass} onClick={() => setOpen(false)}>{l.label}</NavLink>
             ))}
             <SocialLinks />
-            <Link to="/donate" className="btn btn-primary self-start" onClick={() => setOpen(false)}>
+            <Link to="/donate" className="btn btn-primary self-start lg:self-auto" onClick={() => setOpen(false)}>
               Donate
             </Link>
           </nav>
