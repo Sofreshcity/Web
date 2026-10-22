@@ -42,9 +42,8 @@ export default function Media() {
             <p className="mt-3">Real moments from haircuts, neighborhood gatherings, and community care.</p>
             <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {gallery.map((photo) => (
-                <figure key={photo.id} className="overflow-hidden rounded-3xl border-2 border-ink bg-white">
-                  <CommunityPhoto photo={photo} className="aspect-[4/3] w-full" />
-                  <figcaption className="px-5 py-4 font-display font-bold">{photo.caption}</figcaption>
+                <figure key={photo.id} className="rounded-3xl border-2 border-ink bg-white p-2.5 pb-5">
+                  <CommunityPhoto photo={photo} className="aspect-[4/3] w-full rounded-2xl" />
                 </figure>
               ))}
             </div>
