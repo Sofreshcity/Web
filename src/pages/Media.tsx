@@ -33,7 +33,6 @@ export default function Media() {
                 <Icon size={36} strokeWidth={1.8} aria-hidden="true" />
                 <h3 className="mt-5">{title}</h3>
                 <p className="mt-3 flex-1">{description}</p>
-                <span className="mt-6 inline-block text-sm font-display font-bold">Explore our moments</span>
               </article>
             ))}
           </div>
