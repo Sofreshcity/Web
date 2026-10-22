@@ -1,8 +1,6 @@
 import CommunityPhoto from "../components/CommunityPhoto";
+import { Link } from "react-router-dom";
 import { gallery } from "../data/gallery";
-import { Field, FormShell, Select, TextArea } from "../components/FormBits";
-import { CITIES } from "../lib/config";
-import { useForm } from "../lib/useForm";
 
 const services = [
   { title: "Free haircuts", body: "Cuts from volunteer barbers and stylists at our events.", color: "bg-lavender" },
@@ -11,11 +9,6 @@ const services = [
 ];
 
 export default function Services() {
-  const { status, error, onSubmit } = useForm("service", (fd) => ({
-    ...Object.fromEntries(fd),
-    consent_to_contact: fd.get("consent_to_contact") === "on",
-  }));
-
   return (
     <div className="section">
       <div className="container-x">
@@ -35,23 +28,9 @@ export default function Services() {
         </div>
 
         <div className="card mt-12 max-w-2xl bg-white">
-          <h2 className="text-2xl sm:text-3xl">Request a service</h2>
-          <p className="mt-2 text-sm">Leave a phone number or email so we can reach you with the next event or appointment.</p>
-          <form onSubmit={onSubmit} className="mt-6">
-            <FormShell status={status} error={error} submitLabel="Send request" doneMessage="Thanks! We'll be in touch soon.">
-              <Field label="Name" name="full_name" required />
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Phone" name="phone" type="tel" />
-                <Field label="Email" name="email" type="email" />
-              </div>
-              <Select label="What do you need?" name="service" required options={["haircut", "hygiene", "advocacy", "other"]} />
-              <Select label="City" name="preferred_city" options={CITIES} />
-              <TextArea label="Anything else we should know?" name="message" />
-              <label className="flex items-start gap-3 text-sm">
-                <input type="checkbox" name="consent_to_contact" className="mt-1 h-4 w-4" />I agree to be contacted about my request.
-              </label>
-            </FormShell>
-          </form>
+          <h2 className="text-2xl sm:text-3xl">Find free services at an event</h2>
+          <p className="mt-2">See upcoming opportunities to receive free haircuts and connect with our community.</p>
+          <Link to="/events" className="btn btn-primary mt-6">View events</Link>
         </div>
       </div>
     </div>
