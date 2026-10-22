@@ -19,7 +19,6 @@ export default function Home() {
       <section className="section">
         <div className="container-x grid items-center gap-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <p className="mb-4 inline-block rounded-full border-2 border-ink bg-rose px-4 py-1 font-display text-xs font-bold uppercase tracking-wider">San Francisco &amp; Alameda County</p>
             <h1>Free haircuts. Real dignity.</h1>
             <p className="mt-6 max-w-xl text-lg">So Fresh City is a 501(c)(3) nonprofit serving the San Francisco Bay Area with free haircuts, hygiene services, and social advocacy for people in need.</p>
             <div className="mt-8 flex flex-wrap gap-3">
