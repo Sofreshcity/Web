@@ -3,6 +3,8 @@ export const CITIES = ["San Francisco", "Oakland", "Alameda County", "Other"] as
 export const COUNTIES = [
   { id: "San Francisco", label: "San Francisco County" },
   { id: "Alameda", label: "Alameda County" },
+  { id: "Santa Clara", label: "Santa Clara County" },
+  { id: "Marin", label: "Marin County" },
 ] as const;
 
 export const RESOURCE_CATEGORIES = [
@@ -14,6 +16,11 @@ export const RESOURCE_CATEGORIES = [
   { id: "legal", label: "Legal help" },
   { id: "reentry", label: "Reentry support" },
   { id: "id_documents", label: "ID & documents" },
+  { id: "youth_family", label: "Youth & families" },
+  { id: "recovery", label: "Addiction recovery" },
+  { id: "veterans", label: "Veterans support" },
+  { id: "education", label: "Education & literacy" },
+  { id: "community", label: "Community advocacy" },
   { id: "other", label: "Other" },
 ] as const;
 

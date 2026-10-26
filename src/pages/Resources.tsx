@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Clock, Globe, MapPin, Phone } from "lucide-react";
 import { COUNTIES, RESOURCE_CATEGORIES } from "../lib/config";
 import { supabase } from "../lib/supabase";
+import { NETWORK_RESOURCES } from "../data/networkResources";
 
 type Resource = {
   id: string;
@@ -65,7 +66,8 @@ function ResourceCard({ r }: { r: Resource }) {
 }
 
 export default function Resources() {
-  const [rows, setRows] = useState<Resource[] | null>(null);
+  const [rows, setRows] = useState<Resource[]>(NETWORK_RESOURCES);
+  const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -77,7 +79,15 @@ export default function Resources() {
       .order("name")
       .then(({ data, error }) => {
         if (error) setFailed(true);
-        else setRows(data as Resource[]);
+        else {
+          const remote = (data ?? []) as Resource[];
+          // Published database entries take precedence over matching directory entries.
+          const key = (r: Resource) => `${r.county}|${r.category}|${(r.website || r.name).toLowerCase().replace(/^https?:\/\/(www\.)?/, "").replace(/\/+$/, "")}`;
+          const merged = new Map(NETWORK_RESOURCES.map((r) => [key(r), r as Resource]));
+          remote.forEach((r) => merged.set(key(r), r));
+          setRows([...merged.values()]);
+        }
+        setLoading(false);
       });
   }, []);
 
@@ -95,7 +105,7 @@ export default function Resources() {
     <div className="section">
       <div className="container-x">
         <h1>Local resources</h1>
-        <p className="mt-4 max-w-2xl text-lg">Housing, jobs, food, health care, and more, organized by county. Hours and services change, so call ahead when you can.</p>
+        <p className="mt-4 max-w-2xl text-lg">Housing, jobs, food, health care, and more, organized by county and service type. Check each organization’s website for current services, eligibility, and availability.</p>
 
         <nav aria-label="Jump to county" className="mt-6 flex flex-wrap gap-2">
           {COUNTIES.map((c) => (
@@ -105,8 +115,8 @@ export default function Resources() {
           ))}
         </nav>
 
-        {rows === null && !failed && <p className="mt-10">Loading…</p>}
-        {failed && <p className="mt-10">We couldn't load resources right now. Please check back soon.</p>}
+        {loading && <p className="mt-10" role="status">Checking for additional resources…</p>}
+        {failed && <p className="mt-10">Additional resources are temporarily unavailable. You can still browse our community directory below.</p>}
 
         {rows &&
           COUNTIES.map((county, i) => {

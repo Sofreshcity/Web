@@ -1,0 +1,172 @@
+// Public directory entries from the So Fresh City network export.
+// Internal contacts, event details, compensation, and private addresses are intentionally excluded.
+export const NETWORK_RESOURCES = [
+  {
+    "id": "network-1",
+    "county": "Alameda",
+    "category": "community",
+    "name": "Black Organizing Project",
+    "description": "Black-led community organizing, parent and family leadership, and advocacy for racial, social, and economic justice.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.blackorganizingproject.org/",
+    "address": "Oakland",
+    "hours": null
+  },
+  {
+    "id": "network-2",
+    "county": "San Francisco",
+    "category": "housing",
+    "name": "Tenderloin Housing Clinic",
+    "description": "Housing, legal assistance, and supportive services for low-income San Francisco residents. Contact the organization for referral and intake information.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.thclinic.org/en/",
+    "address": "San Francisco",
+    "hours": null
+  },
+  {
+    "id": "network-3",
+    "county": "San Francisco",
+    "category": "youth_family",
+    "name": "Larkin Street Youth Services",
+    "description": "Housing, employment, education, and wellness support for young people experiencing homelessness. Start with the engagement center for connections to services.",
+    "phone": null,
+    "email": null,
+    "website": "https://larkinstreetyouth.org/",
+    "address": "San Francisco",
+    "hours": null
+  },
+  {
+    "id": "network-4",
+    "county": "San Francisco",
+    "category": "housing",
+    "name": "DISH (Delivering Innovation in Supportive Housing)",
+    "description": "Permanent supportive housing and resident programs for people who have experienced homelessness. See the website for how to get housed.",
+    "phone": null,
+    "email": null,
+    "website": "https://dishsf.org/",
+    "address": "San Francisco",
+    "hours": null
+  },
+  {
+    "id": "network-5",
+    "county": "Alameda",
+    "category": "youth_family",
+    "name": "Eden Youth",
+    "description": "Youth and family programs, community events, and connections to local resources.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.edenyouth.org/",
+    "address": "Hayward",
+    "hours": null
+  },
+  {
+    "id": "network-6",
+    "county": "Alameda",
+    "category": "mental_health",
+    "name": "La Familia - Together Again Program",
+    "description": "Mental health, recovery, and community support services for individuals and families. Contact La Familia about the Together Again program and appropriate services.",
+    "phone": null,
+    "email": null,
+    "website": "https://livelafamilia.org/",
+    "address": "Hayward",
+    "hours": null
+  },
+  {
+    "id": "network-7",
+    "county": "Santa Clara",
+    "category": "veterans",
+    "name": "Open Doors To Future Possibilities (ODTFP)",
+    "description": "Support for veterans and their families, including counseling, homeless outreach, and connections to community resources.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.opendoorstofuturepossibilities.org/",
+    "address": "San Jose",
+    "hours": null
+  },
+  {
+    "id": "network-8",
+    "county": "Alameda",
+    "category": "education",
+    "name": "Storyland Collective",
+    "description": "Free family literacy events, storytelling, and creative activities that connect children and caregivers through books and art.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.storylandcollective.org/",
+    "address": "Oakland",
+    "hours": null
+  },
+  {
+    "id": "network-9",
+    "county": "Marin",
+    "category": "reentry",
+    "name": "San Quentin Rehabilitation Center",
+    "description": "Official facility information, rehabilitation programs, and family and visiting resources. This is a correctional facility, not a walk-in community service provider.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.cdcr.ca.gov/facility-locator/sqrc/",
+    "address": "San Quentin",
+    "hours": null
+  },
+  {
+    "id": "network-10",
+    "county": "San Francisco",
+    "category": "housing",
+    "name": "Mercy Housing",
+    "description": "Affordable housing and resident services. Use the website to explore properties, application information, and availability.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.mercyhousing.org/california/",
+    "address": "San Francisco",
+    "hours": null
+  },
+  {
+    "id": "network-11",
+    "county": "San Francisco",
+    "category": "recovery",
+    "name": "Father Alfred Center (St. Anthony's)",
+    "description": "St. Anthony’s residential addiction recovery program for adult men. Contact the program for current eligibility and admission requirements.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.stanthonysf.org/services/addiction-recovery/",
+    "address": "San Francisco",
+    "hours": null
+  },
+  {
+    "id": "network-12",
+    "county": "Alameda",
+    "category": "education",
+    "name": "Oakland Public Library",
+    "description": "Public library branches, books, learning resources, and community programs. Check the website for branch services and events.",
+    "phone": null,
+    "email": null,
+    "website": "https://oaklandlibrary.org/",
+    "address": "Oakland",
+    "hours": null
+  },
+  {
+    "id": "network-13",
+    "county": "Alameda",
+    "category": "mental_health",
+    "name": "Fred Finch Youth Center",
+    "description": "Behavioral health, education, housing, and community-based support for youth and families. Contact the organization for program eligibility and referrals.",
+    "phone": null,
+    "email": null,
+    "website": "https://www.fredfinch.org/",
+    "address": "Oakland",
+    "hours": null
+  },
+  {
+    "id": "network-14",
+    "county": "Alameda",
+    "category": "reentry",
+    "name": "Rubicon Programs - CORE (Center of Reentry Excellence)",
+    "description": "Connections to services for justice-impacted individuals and their families, including housing assistance and help applying for public benefits.",
+    "phone": null,
+    "email": null,
+    "website": "https://reentryexcellence.org/",
+    "address": "Oakland",
+    "hours": null
+  }
+];
