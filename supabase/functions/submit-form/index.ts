@@ -2,8 +2,9 @@
 // Secrets required: RESEND_API_KEY, FROM_EMAIL, NOTIFY_EMAIL, ALLOWED_ORIGINS (comma-separated).
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided automatically.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 
-type Kind = "volunteer" | "service" | "contact" | "newsletter" | "unsubscribe";
+type Kind = "volunteer" | "service" | "contact" | "newsletter" | "unsubscribe" | "collaborator_feedback";
 
 const cors = (origin: string | null) => {
   const allowed = (Deno.env.get("ALLOWED_ORIGINS") ?? "").split(",").map((s) => s.trim()).filter(Boolean);
@@ -23,14 +24,14 @@ const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 const emailOk = (s: string) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s);
 
-async function sendEmail(to: string | string[], subject: string, html: string, replyTo?: string) {
+async function sendEmail(to: string | string[], subject: string, html: string, replyTo?: string, attachments?: {filename:string;content:string}[]) {
   const key = Deno.env.get("RESEND_API_KEY");
   const from = Deno.env.get("FROM_EMAIL");
   if (!key || !from) return; // email not configured yet; the submission is still saved
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from, to, subject, html, ...(replyTo ? { reply_to: replyTo } : {}) }),
+    body: JSON.stringify({ from, to, subject, html, ...(replyTo ? { reply_to: replyTo } : {}), ...(attachments ? {attachments} : {}) }),
   });
   if (!res.ok) console.error("Resend error", res.status, await res.text());
 }
@@ -55,7 +56,56 @@ Deno.serve(async (req) => {
   const notify = Deno.env.get("NOTIFY_EMAIL");
 
   try {
-    if (kind === "volunteer") {
+    if (kind === "collaborator_feedback") {
+      const rating = (v: unknown) => Number.isInteger(Number(v)) && Number(v) >= 1 && Number(v) <= 10 ? Number(v) : null;
+      const row = {
+        organization_name: str(body.organization_name, 160),
+        representative_name: str(body.representative_name, 160),
+        event_date: str(body.event_date, 10),
+        city: str(body.city, 100),
+        event_success: rating(body.event_success),
+        recommend: str(body.recommend, 3),
+        professionalism: rating(body.professionalism),
+        comments: str(body.comments, 4000) || null,
+        submitted_at: new Date().toISOString(),
+      };
+      if (!row.organization_name || !row.representative_name || !/^\\d{4}-\\d{2}-\\d{2}$/.test(row.event_date) || Number.isNaN(Date.parse(row.event_date)) || !row.city || row.event_success === null || row.professionalism === null || !["Yes","No"].includes(row.recommend)) {
+        return json({error:"Please complete all required fields."},400,headers);
+      }
+      const {error} = await db.from("collaborator_feedback").insert(row);
+      if (error) throw error;
+      const fields: [string,string][] = [
+        ["Organization Name",row.organization_name],["Representative Name",row.representative_name],
+        ["Date of Event",row.event_date],["City",row.city],
+        ["How successful was the event?",String(row.event_success)+"/10"],
+        ["Would you recommend us to other organizers?",row.recommend],
+        ["Professionalism",String(row.professionalism)+"/10"],
+        ["Questions, Comments, or Concerns",row.comments ?? "None"],
+        ["Submitted At (UTC)",row.submitted_at],
+      ];
+      const pdf = await PDFDocument.create();
+      let page = pdf.addPage([612,792]);
+      const font = await pdf.embedFont(StandardFonts.Helvetica);
+      const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
+      let y=750;
+      page.drawText("SO FRESH CITY | COLLABORATOR FEEDBACK",{x:44,y,size:15,font:bold,color:rgb(0,0,0)});
+      y-=40;
+      const wrap=(value:string,width=86) => (value.match(new RegExp(".{1,"+width+"}(?:\\s|$)|\\S+","g")) ?? [""]).map(x=>x.trim());
+      for(const [label,value] of fields) {
+        if(y<95){page=pdf.addPage([612,792]);y=750;}
+        page.drawText(label,{x:44,y,size:10,font:bold});y-=17;
+        for(const line of wrap(value.replace(/[\\r\\n]+/g," "))) {
+          if(y<55){page=pdf.addPage([612,792]);y=750;}
+          page.drawText(line.slice(0,100),{x:44,y,size:10,font});y-=15;
+        }
+        y-=14;
+      }
+      const bytes=await pdf.save();
+      const base64=btoa(Array.from(bytes,b=>String.fromCharCode(b)).join(""));
+      const recipient=Deno.env.get("COLLABORATOR_FEEDBACK_EMAIL") ?? "info@sofreshcity.org";
+      const html="<h2>New collaborator feedback</h2>"+fields.map(([k,v])=>"<p><strong>"+esc(k)+":</strong> "+esc(v)+"</p>").join("");
+      await sendEmail(recipient,"Collaborator feedback: "+row.organization_name,html,undefined,[{filename:"collaborator-feedback.pdf",content:base64}]);
+    } else if (kind === "volunteer") {
       const row = {
         full_name: str(body.full_name, 120),
         email: str(body.email, 200).toLowerCase(),

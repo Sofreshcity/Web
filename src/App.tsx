@@ -14,6 +14,7 @@ import Resources from "./pages/Resources";
 import Newsletter from "./pages/Newsletter";
 import Unsubscribe from "./pages/Unsubscribe";
 import NotFound from "./pages/NotFound";
+import CollaboratorFeedback from "./pages/CollaboratorFeedback";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="events" element={<Events />} />
         <Route path="get-involved" element={<GetInvolved />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="collaborator-feedback" element={<CollaboratorFeedback />} />
         <Route path="newsletter" element={<Newsletter />} />
         <Route path="unsubscribe" element={<Unsubscribe />} />
         <Route path="donate" element={<Donate />} />

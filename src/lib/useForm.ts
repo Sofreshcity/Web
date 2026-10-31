@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { SUPABASE_URL } from "./supabase";
 
-type Kind = "volunteer" | "service" | "contact" | "newsletter";
+type Kind = "volunteer" | "service" | "contact" | "newsletter" | "collaborator_feedback";
 type Status = "idle" | "sending" | "done" | "error";
 
 export function useForm(kind: Kind, collect: (fd: FormData) => Record<string, unknown> = (fd) => Object.fromEntries(fd)) {
