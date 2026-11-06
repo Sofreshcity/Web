@@ -55,8 +55,8 @@ const featuredEvents: EventRow[] = [
     city: "San Francisco, CA",
     venue: "Mercy Housing",
     address: "691 China Basin Street",
-    starts_at: "2026-11-12T16:00:00-08:00",
-    ends_at: null,
+    starts_at: "2026-11-12T13:00:00-08:00",
+    ends_at: "2026-11-12T17:00:00-08:00",
   },
 ];
 
