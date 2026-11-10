@@ -6,6 +6,7 @@ const services = [
   { title: "Free haircuts", body: "Cuts from volunteer barbers and stylists at our events.", color: "bg-lavender" },
   { title: "Hygiene services", body: "Hygiene supplies and care to help you feel your best.", color: "bg-mint" },
   { title: "Social advocacy", body: "Help connecting with local resources and employment readiness support.", color: "bg-peach" },
+  { title: "Community events", body: "Providing haircut & styling services for community based events across the Bay Area!", color: "bg-lavender" },
 ];
 
 export default function Services() {
@@ -13,12 +14,12 @@ export default function Services() {
     <div className="section">
       <div className="container-x">
         <h1>Services</h1>
-        <p className="mt-4 max-w-2xl text-lg">All of our services are free.</p>
+        <Link to="/service-inquiry" className="btn btn-primary mt-6">Inquire about service</Link>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <CommunityPhoto photo={gallery[0]} className="aspect-[4/3] w-full rounded-3xl border-2 border-ink" />
           <CommunityPhoto photo={gallery[3]} className="aspect-[4/3] w-full rounded-3xl border-2 border-ink" />
         </div>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
+        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {services.map((s) => (
             <div key={s.title} className={`card ${s.color}`}>
               <h3>{s.title}</h3>
