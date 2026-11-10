@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
+import ServiceInquiry from "./pages/ServiceInquiry";
 import Media from "./pages/Media";
 import Barbers from "./pages/Barbers";
 import Events from "./pages/Events";
@@ -23,6 +24,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="services" element={<Services />} />
+        <Route path="service-inquiry" element={<ServiceInquiry />} />
         <Route path="media" element={<Media />} />
         <Route path="barbers" element={<Barbers />} />
         <Route path="resources" element={<Resources />} />
