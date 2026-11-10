@@ -2,13 +2,14 @@ import { useRef } from "react";
 import CommunityPhoto from "../components/CommunityPhoto";
 import { gallery } from "../data/gallery";
 import { Link } from "react-router-dom";
-import { Scissors, Sparkles, Megaphone, ArrowLeft, ArrowRight } from "lucide-react";
+import { Scissors, Sparkles, Megaphone, CalendarDays, ArrowLeft, ArrowRight } from "lucide-react";
 import { DONATE_URL } from "../lib/config";
 
 const pillars = [
   { icon: Scissors, title: "Free haircuts", body: "Professional-quality cuts for people who need them, delivered with respect.", color: "bg-lavender" },
   { icon: Sparkles, title: "Hygiene services", body: "Care and supplies that help people feel clean, confident, and ready for the day.", color: "bg-mint" },
   { icon: Megaphone, title: "Social advocacy", body: "Connecting neighbors to the resources and opportunities that support employment readiness.", color: "bg-peach" },
+  { icon: CalendarDays, title: "Community events", body: "Providing haircut & styling services for community based events across the Bay Area!", color: "bg-lavender" },
 ];
 
 export default function Home() {
@@ -48,7 +49,7 @@ export default function Home() {
       <section className="section border-y-2 border-ink bg-white">
         <div className="container-x">
           <h2>What we do</h2>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
+          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {pillars.map(({ icon: Icon, title, body, color }) => (
               <div key={title} className={`card ${color}`}>
                 <Icon aria-hidden="true" />
